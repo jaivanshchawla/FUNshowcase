@@ -309,7 +309,7 @@ export function Component() {
         .fullscreen-menu-container { position: absolute; inset: 0; pointer-events: none; z-index: 25; }
         .nav-overlay-wrapper { display: none; position: absolute; inset: 0; pointer-events: auto; }
         .overlay { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.45); }
-        .menu-content { position: absolute; inset: 0; transform: translateX(120%); }
+        .menu-content { position: absolute; inset: 0; }
         .menu-bg { position: absolute; inset: 0; overflow: hidden; }
         .backdrop-layer { position: absolute; inset: 0; background: linear-gradient(135deg, #171f3e, #0d1020); }
         .backdrop-layer.first { background: linear-gradient(120deg, #1d2a58, #14182f); }
