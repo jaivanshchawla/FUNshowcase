@@ -316,6 +316,12 @@ export function Component() {
 
             <div className="menu-content-wrapper">
               <ul className="menu-list">
+                <li className="menu-list-item">
+                  <a href="/" className="nav-link w-inline-block">
+                    <p className="nav-link-text">Home</p>
+                    <div className="nav-link-hover-bg"></div>
+                  </a>
+                </li>
                 <li className="menu-list-item" data-shape="1">
                   <a href="/morpher" className="nav-link w-inline-block">
                     <p className="nav-link-text">Morpher</p>

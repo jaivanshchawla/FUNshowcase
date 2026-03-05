@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "motion/react";
-import { Component } from "@/components/ui/sterling-gate-kinetic-navigation";
 import { HandWrittenTitle } from "@/components/ui/hand-writing-text";
 
 function GradientBars({ bars = 20, colors = ["#e60a64", "transparent"] }) {
@@ -49,9 +48,6 @@ export default function Home() {
           title="Fun Feature Showcase"
           subtitle="coolguyjc😎"
         />
-      </div>
-      <div className="absolute inset-0 z-10">
-        <Component />
       </div>
       <style jsx global>{`
         body {
