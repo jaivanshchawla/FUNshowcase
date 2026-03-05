@@ -139,52 +139,6 @@ const CrowdCanvas = ({
       return peep;
     };
 
-    const makeFallbackSprite = () => {
-      const cellW = 70;
-      const cellH = 100;
-      const sheet = document.createElement("canvas");
-      sheet.width = rows * cellW;
-      sheet.height = cols * cellH;
-      const sctx = sheet.getContext("2d");
-      if (!sctx) return "";
-
-      const palette = [
-        "#111827",
-        "#1f2937",
-        "#374151",
-        "#4b5563",
-        "#6b7280",
-        "#9ca3af",
-      ];
-
-      for (let i = 0; i < rows * cols; i++) {
-        const x = (i % rows) * cellW;
-        const y = ((i / rows) | 0) * cellH;
-        const body = palette[i % palette.length];
-        const skin = ["#f2d3b1", "#d6a57a", "#f8cfa8", "#c8895f"][i % 4];
-
-        sctx.clearRect(x, y, cellW, cellH);
-        sctx.fillStyle = body;
-        sctx.fillRect(x + 22, y + 34, 26, 44);
-
-        sctx.fillStyle = skin;
-        sctx.beginPath();
-        sctx.arc(x + 35, y + 24, 12, 0, Math.PI * 2);
-        sctx.fill();
-
-        sctx.strokeStyle = "#0b0f19";
-        sctx.lineWidth = 3;
-        sctx.beginPath();
-        sctx.moveTo(x + 28, y + 78);
-        sctx.lineTo(x + 23, y + 95);
-        sctx.moveTo(x + 42, y + 78);
-        sctx.lineTo(x + 47, y + 95);
-        sctx.stroke();
-      }
-
-      return sheet.toDataURL("image/png");
-    };
-
     // MAIN
     const img = document.createElement("img");
     const stage = {
@@ -286,12 +240,6 @@ const CrowdCanvas = ({
     };
 
     img.onload = init;
-    img.onerror = () => {
-      const fallback = makeFallbackSprite();
-      if (fallback && img.src !== fallback) {
-        img.src = fallback;
-      }
-    };
     img.src = config.src;
 
     const handleResize = () => resize();
