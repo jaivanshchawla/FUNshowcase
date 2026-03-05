@@ -4,7 +4,7 @@ import { Component as KineticNavbar } from "@/components/ui/sterling-gate-kineti
 
 export default function GlobalNavbar() {
   return (
-    <div className="fixed inset-0 z-[9999] pointer-events-none">
+    <div className="fixed inset-0 z-[9999]">
       <KineticNavbar />
     </div>
   );
