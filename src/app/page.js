@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react";
 import { Component } from "@/components/ui/sterling-gate-kinetic-navigation";
+import { HandWrittenTitle } from "@/components/ui/hand-writing-text";
 
 function GradientBars({ bars = 20, colors = ["#e60a64", "transparent"] }) {
   const gradientStyle = `linear-gradient(to top, ${colors.join(", ")})`;
@@ -43,6 +44,12 @@ export default function Home() {
   return (
     <main className="relative h-screen w-screen overflow-hidden bg-black">
       <GradientBars />
+      <div className="pointer-events-none absolute inset-0 z-[5] flex items-center justify-center px-4">
+        <HandWrittenTitle
+          title="Fun Feature Showcase"
+          subtitle="coolguyjc😎"
+        />
+      </div>
       <div className="absolute inset-0 z-10">
         <Component />
       </div>
