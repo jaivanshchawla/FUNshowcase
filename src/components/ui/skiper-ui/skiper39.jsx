@@ -165,9 +165,7 @@ const CrowdCanvas = ({
 
         sctx.clearRect(x, y, cellW, cellH);
         sctx.fillStyle = body;
-        sctx.beginPath();
-        sctx.roundRect(x + 22, y + 34, 26, 44, 10);
-        sctx.fill();
+        sctx.fillRect(x + 22, y + 34, 26, 44);
 
         sctx.fillStyle = skin;
         sctx.beginPath();
