@@ -20,7 +20,7 @@ export function Component() {
     try {
         if (!gsap.parseEase("main")) {
             CustomEase.create("main", "0.65, 0.01, 0.05, 0.99");
-            gsap.defaults({ ease: "main", duration: 0.7 });
+            gsap.defaults({ ease: "main", duration: 0.62 });
         }
     } catch (e) {
         console.warn("CustomEase failed to load, falling back to default.", e);
@@ -334,7 +334,7 @@ export function Component() {
                 </li>
                 <li className="menu-list-item" data-shape="4">
                   <a href="#" className="nav-link w-inline-block">
-                    <p className="nav-link-text" data-menu-fade>Blog</p>
+                    <p className="nav-link-text">Blog</p>
                     <div className="nav-link-hover-bg"></div>
                   </a>
                 </li>
