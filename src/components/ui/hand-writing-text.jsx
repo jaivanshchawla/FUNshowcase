@@ -29,11 +29,10 @@ function HandWrittenTitle({
                     className="w-full h-full">
                     <title>KokonutUI</title>
                     <motion.path
-                        d="M 950 90 
-                           C 1250 300, 1050 480, 600 520
-                           C 250 520, 150 480, 150 300
-                           C 150 120, 350 80, 600 80
-                           C 850 80, 950 180, 950 180"
+                        d="M 110 305
+                           C 120 120, 1080 110, 1100 305
+                           C 1080 500, 140 505, 110 305
+                           C 130 160, 1010 150, 1030 305"
                         fill="none"
                         strokeWidth="12"
                         stroke="currentColor"
