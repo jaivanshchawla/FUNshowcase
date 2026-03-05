@@ -144,7 +144,9 @@ export function Component() {
             // CLOSE
             if (navWrap) navWrap.setAttribute("data-nav", "closed");
 
-            tl.to(overlay, { autoAlpha: 0 })
+            tl.to(menuLinks, { yPercent: 140, rotate: 10, stagger: 0.04 })
+              .to(bgPanels, { xPercent: 101, stagger: 0.1, duration: 0.52 }, "<")
+              .to(overlay, { autoAlpha: 0 }, "<")
               .to(menu, { xPercent: 120 }, "<")
               // Animate Button Text and Icon Back
               .to(menuButtonTexts, { yPercent: 0 }, "<")
