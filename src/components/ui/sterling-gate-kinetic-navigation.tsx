@@ -329,8 +329,8 @@ export function Component() {
                   </a>
                 </li>
                 <li className="menu-list-item" data-shape="2">
-                  <a href="#" className="nav-link w-inline-block">
-                    <p className="nav-link-text">Our work</p>
+                  <a href="/people" className="nav-link w-inline-block">
+                    <p className="nav-link-text">People</p>
                     <div className="nav-link-hover-bg"></div>
                   </a>
                 </li>
