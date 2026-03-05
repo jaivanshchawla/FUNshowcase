@@ -28,11 +28,11 @@ function HandWrittenTitle({
                     animate="visible"
                     className="w-full h-full">
                     <title>KokonutUI</title>
-                    <motion.path
-                        d="M 35 345
-                           C 70 95, 1130 95, 1165 345
-                           C 1130 585, 70 585, 35 345
-                           C 85 180, 1085 180, 1110 345"
+                    <motion.ellipse
+                        cx="600"
+                        cy="285"
+                        rx="535"
+                        ry="170"
                         fill="none"
                         strokeWidth="12"
                         stroke="currentColor"
