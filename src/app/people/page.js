@@ -1,4 +1,4 @@
-import { Skiper39 } from "@/components/ui/canvas-crowd";
+import { Skiper39 } from "@/components/v1/skiper39";
 
 export default function PeoplePage() {
   return (
@@ -7,4 +7,3 @@ export default function PeoplePage() {
     </main>
   );
 }
-
