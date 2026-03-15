@@ -100,6 +100,7 @@ const lerp = (start, end, t) => start * (1 - t) + end * t;
 export default function IntroAnimation() {
     const [introPhase, setIntroPhase] = useState("scatter");
     const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
+    const scrollContainerRef = useRef(null);
     const containerRef = useRef(null);
 
     // --- Container Size ---
@@ -127,47 +128,22 @@ export default function IntroAnimation() {
         return () => observer.disconnect();
     }, []);
 
-    // --- Virtual Scroll Logic ---
+    // --- Scroll-Driven Animation ---
     const virtualScroll = useMotionValue(0);
-    const scrollRef = useRef(0); // Keep track of scroll value without re-renders
 
     useEffect(() => {
-        const container = containerRef.current;
-        if (!container) return;
+        const scrollContainer = scrollContainerRef.current;
+        if (!scrollContainer) return;
 
-        const handleWheel = (e) => {
-            // Prevent default to stop browser overscroll/bounce
-            e.preventDefault();
-
-            const newScroll = Math.min(Math.max(scrollRef.current + e.deltaY, 0), MAX_SCROLL);
-            scrollRef.current = newScroll;
-            virtualScroll.set(newScroll);
+        const syncScroll = () => {
+            virtualScroll.set(Math.min(scrollContainer.scrollTop, MAX_SCROLL));
         };
 
-        // Touch support
-        let touchStartY = 0;
-        const handleTouchStart = (e) => {
-            touchStartY = e.touches[0].clientY;
-        };
-        const handleTouchMove = (e) => {
-            const touchY = e.touches[0].clientY;
-            const deltaY = touchStartY - touchY;
-            touchStartY = touchY;
-
-            const newScroll = Math.min(Math.max(scrollRef.current + deltaY, 0), MAX_SCROLL);
-            scrollRef.current = newScroll;
-            virtualScroll.set(newScroll);
-        };
-
-        // Attach listeners to container instead of window for portability
-        container.addEventListener("wheel", handleWheel, { passive: false });
-        container.addEventListener("touchstart", handleTouchStart, { passive: false });
-        container.addEventListener("touchmove", handleTouchMove, { passive: false });
+        syncScroll();
+        scrollContainer.addEventListener("scroll", syncScroll, { passive: true });
 
         return () => {
-            container.removeEventListener("wheel", handleWheel);
-            container.removeEventListener("touchstart", handleTouchStart);
-            container.removeEventListener("touchmove", handleTouchMove);
+            scrollContainer.removeEventListener("scroll", syncScroll);
         };
     }, [virtualScroll]);
 
@@ -243,49 +219,52 @@ export default function IntroAnimation() {
 
     return (
         <div
-            ref={containerRef}
-            className="relative w-full h-full bg-[#FAFAFA] overflow-hidden">
-            {/* Container */}
+            ref={scrollContainerRef}
+            className="relative h-full w-full overflow-y-auto bg-[#FAFAFA] overscroll-none">
             <div
-                className="flex h-full w-full flex-col items-center justify-center perspective-1000">
-
-                {/* Intro Text (Fades out) */}
+                className="relative"
+                style={{ height: `calc(100vh + ${MAX_SCROLL}px)` }}>
                 <div
-                    className="absolute z-0 flex flex-col items-center justify-center text-center pointer-events-none top-1/2 -translate-y-1/2">
-                    <motion.h1
-                        initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
-                        animate={introPhase === "circle" && morphValue < 0.5 ? { opacity: 1 - morphValue * 2, y: 0, filter: "blur(0px)" } : { opacity: 0, filter: "blur(10px)" }}
-                        transition={{ duration: 1 }}
-                        className="text-2xl font-medium tracking-tight text-gray-800 md:text-4xl">
-                        The future is built on AI.
-                    </motion.h1>
-                    <motion.p
-                        initial={{ opacity: 0 }}
-                        animate={introPhase === "circle" && morphValue < 0.5 ? { opacity: 0.5 - morphValue } : { opacity: 0 }}
-                        transition={{ duration: 1, delay: 0.2 }}
-                        className="mt-4 text-xs font-bold tracking-[0.2em] text-gray-500">
-                        SCROLL TO EXPLORE
-                    </motion.p>
-                </div>
+                    ref={containerRef}
+                    className="sticky top-0 flex h-screen w-full flex-col items-center justify-center overflow-hidden perspective-1000">
 
-                {/* Arc Active Content (Fades in) */}
-                <motion.div
-                    style={{ opacity: contentOpacity, y: contentY }}
-                    className="absolute top-[10%] z-10 flex flex-col items-center justify-center text-center pointer-events-none px-4">
-                    <h2
-                        className="text-3xl md:text-5xl font-semibold text-gray-900 tracking-tight mb-4">
-                        Explore Our Vision
-                    </h2>
-                    <p className="text-sm md:text-base text-gray-600 max-w-lg leading-relaxed">
-                        Discover a world where technology meets creativity. <br className="hidden md:block" />
-                        Scroll through our curated collection of innovations designed to shape the future.
-                    </p>
-                </motion.div>
+                    {/* Intro Text (Fades out) */}
+                    <div
+                        className="absolute z-0 flex flex-col items-center justify-center text-center pointer-events-none top-1/2 -translate-y-1/2">
+                        <motion.h1
+                            initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
+                            animate={introPhase === "circle" && morphValue < 0.5 ? { opacity: 1 - morphValue * 2, y: 0, filter: "blur(0px)" } : { opacity: 0, filter: "blur(10px)" }}
+                            transition={{ duration: 1 }}
+                            className="text-2xl font-medium tracking-tight text-gray-800 md:text-4xl">
+                            The future is built on AI.
+                        </motion.h1>
+                        <motion.p
+                            initial={{ opacity: 0 }}
+                            animate={introPhase === "circle" && morphValue < 0.5 ? { opacity: 0.5 - morphValue } : { opacity: 0 }}
+                            transition={{ duration: 1, delay: 0.2 }}
+                            className="mt-4 text-xs font-bold tracking-[0.2em] text-gray-500">
+                            SCROLL TO EXPLORE
+                        </motion.p>
+                    </div>
 
-                {/* Main Container */}
-                <div className="relative flex items-center justify-center w-full h-full">
-                    {IMAGES.slice(0, TOTAL_IMAGES).map((src, i) => {
-                        let target = { x: 0, y: 0, rotation: 0, scale: 1, opacity: 1 };
+                    {/* Arc Active Content (Fades in) */}
+                    <motion.div
+                        style={{ opacity: contentOpacity, y: contentY }}
+                        className="absolute top-[10%] z-10 flex flex-col items-center justify-center text-center pointer-events-none px-4">
+                        <h2
+                            className="text-3xl md:text-5xl font-semibold text-gray-900 tracking-tight mb-4">
+                            Explore Our Vision
+                        </h2>
+                        <p className="text-sm md:text-base text-gray-600 max-w-lg leading-relaxed">
+                            Discover a world where technology meets creativity. <br className="hidden md:block" />
+                            Scroll through our curated collection of innovations designed to shape the future.
+                        </p>
+                    </motion.div>
+
+                    {/* Main Container */}
+                    <div className="relative flex h-full w-full items-center justify-center">
+                        {IMAGES.slice(0, TOTAL_IMAGES).map((src, i) => {
+                            let target = { x: 0, y: 0, rotation: 0, scale: 1, opacity: 1 };
 
                         // 1. Intro Phases (Scatter -> Line)
                         if (introPhase === "scatter") {
@@ -373,17 +352,18 @@ export default function IntroAnimation() {
                             };
                         }
 
-                        return (
-                            <FlipCard
-                                key={i}
-                                src={src}
-                                index={i}
-                                total={TOTAL_IMAGES}
-                                // Pass intro phase for initial animations
-                                phase={introPhase}
-                                target={target} />
-                        );
-                    })}
+                            return (
+                                <FlipCard
+                                    key={i}
+                                    src={src}
+                                    index={i}
+                                    total={TOTAL_IMAGES}
+                                    // Pass intro phase for initial animations
+                                    phase={introPhase}
+                                    target={target} />
+                            );
+                        })}
+                    </div>
                 </div>
             </div>
         </div>
