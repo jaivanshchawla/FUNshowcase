@@ -1,4 +1,4 @@
-"use client";;
+"use client";
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import { motion, useTransform, useSpring, useMotionValue } from "framer-motion";
 
@@ -35,6 +35,7 @@ function FlipCard({
                 height: IMG_HEIGHT,
                 transformStyle: "preserve-3d", // Essential for the 3D hover effect
                 perspective: "1000px",
+                willChange: "transform, opacity",
             }}
             className="cursor-pointer group">
             <motion.div
@@ -174,8 +175,14 @@ export default function IntroAnimation() {
             // Move +/- 100px
             mouseX.set(normalizedX * 100);
         };
+        const handleMouseLeave = () => mouseX.set(0);
+
         container.addEventListener("mousemove", handleMouseMove);
-        return () => container.removeEventListener("mousemove", handleMouseMove);
+        container.addEventListener("mouseleave", handleMouseLeave);
+        return () => {
+            container.removeEventListener("mousemove", handleMouseMove);
+            container.removeEventListener("mouseleave", handleMouseLeave);
+        };
     }, [mouseX]);
 
     // --- Intro Sequence ---
@@ -216,17 +223,20 @@ export default function IntroAnimation() {
     // Fade in content when arc is formed (morphValue > 0.8)
     const contentOpacity = useTransform(smoothMorph, [0.8, 1], [0, 1]);
     const contentY = useTransform(smoothMorph, [0.8, 1], [20, 0]);
+    const sceneHeight = containerSize.height || 0;
 
     return (
         <div
             ref={scrollContainerRef}
-            className="relative h-full w-full overflow-y-auto bg-[#FAFAFA] overscroll-none">
+            className="relative h-full w-full overflow-y-auto bg-[#FAFAFA] overscroll-none"
+            style={{ touchAction: "pan-y" }}>
             <div
                 className="relative"
-                style={{ height: `calc(100vh + ${MAX_SCROLL}px)` }}>
+                style={{ height: sceneHeight ? `${sceneHeight + MAX_SCROLL}px` : `calc(100vh + ${MAX_SCROLL}px)` }}>
                 <div
                     ref={containerRef}
-                    className="sticky top-0 flex h-screen w-full flex-col items-center justify-center overflow-hidden perspective-1000">
+                    className="sticky top-0 flex w-full flex-col items-center justify-center overflow-hidden perspective-1000"
+                    style={{ height: sceneHeight || "100vh" }}>
 
                     {/* Intro Text (Fades out) */}
                     <div
