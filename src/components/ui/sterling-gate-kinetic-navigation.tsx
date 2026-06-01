@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import gsap from "gsap";
 import { CustomEase } from "gsap/CustomEase";
 
@@ -171,8 +172,20 @@ export function Component() {
     return () => window.removeEventListener("keydown", handleEsc);
   }, [isMenuOpen]);
 
-  const toggleMenu = () => setIsMenuOpen(prev => !prev);
-  const closeMenu = () => setIsMenuOpen(false);
+  const toggleMenu = () => {
+    console.log("[Navigation] toggleMenu called. isMenuOpen=", isMenuOpen);
+    setIsMenuOpen((prev) => !prev);
+  };
+
+  const closeMenu = () => {
+    console.log("[Navigation] closeMenu called.");
+    setIsMenuOpen(false);
+  };
+
+  const handleNavClick = (path: string, label: string) => {
+    console.log(`[Navigation] clicked ${label} -> ${path}`);
+    closeMenu();
+  };
 
   return (
     <div ref={containerRef}>
@@ -317,37 +330,51 @@ export function Component() {
             <div className="menu-content-wrapper">
               <ul className="menu-list">
                 <li className="menu-list-item">
-                  <a href="/" className="nav-link w-inline-block">
+                  <Link href="/" className="nav-link w-inline-block" onClick={() => handleNavClick("/", "Home") }>
                     <p className="nav-link-text">Home</p>
                     <div className="nav-link-hover-bg"></div>
-                  </a>
+                  </Link>
                 </li>
                 <li className="menu-list-item" data-shape="1">
-                  <a href="/morpher" className="nav-link w-inline-block">
+                  <Link href="/morpher" className="nav-link w-inline-block" onClick={() => handleNavClick("/morpher", "Morpher") }>
                     <p className="nav-link-text">Morpher</p>
                     <div className="nav-link-hover-bg"></div>
-                  </a>
+                  </Link>
                 </li>
                 <li className="menu-list-item" data-shape="2">
-                  <a href="/people" className="nav-link w-inline-block">
+                  <Link href="/people" className="nav-link w-inline-block" onClick={() => handleNavClick("/people", "People") }>
                     <p className="nav-link-text">People</p>
                     <div className="nav-link-hover-bg"></div>
-                  </a>
+                  </Link>
                 </li>
                 <li className="menu-list-item" data-shape="3">
-                  <a href="#" className="nav-link w-inline-block">
+                  <Link href="/services" className="nav-link w-inline-block" onClick={() => handleNavClick("/services", "Services") }>
                     <p className="nav-link-text">Services</p>
                     <div className="nav-link-hover-bg"></div>
-                  </a>
+                  </Link>
                 </li>
                 <li className="menu-list-item" data-shape="4">
-                  <a href="#" className="nav-link w-inline-block">
+                  <a
+                    href="#"
+                    className="nav-link w-inline-block"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      console.log("[Navigation] clicked Blog placeholder");
+                    }}
+                  >
                     <p className="nav-link-text">Blog</p>
                     <div className="nav-link-hover-bg"></div>
                   </a>
                 </li>
                 <li className="menu-list-item" data-shape="5">
-                  <a href="#" className="nav-link w-inline-block">
+                  <a
+                    href="#"
+                    className="nav-link w-inline-block"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      console.log("[Navigation] clicked Contact us placeholder");
+                    }}
+                  >
                     <p className="nav-link-text">Contact us</p>
                     <div className="nav-link-hover-bg"></div>
                   </a>
