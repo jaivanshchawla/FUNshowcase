@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function NotFoundPage() {
   return (
@@ -13,6 +14,7 @@ export default function NotFoundPage() {
 }
 
 function MessageDisplay() {
+  const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -36,7 +38,14 @@ function MessageDisplay() {
           The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.
         </div>
         <div className="flex gap-6 mt-8">
-          <button className="text-white border-2 border-white hover:bg-white hover:text-black transition-all duration-300 ease-in-out px-6 py-2 h-auto text-base font-medium flex items-center gap-2 hover:scale-105">
+          <button
+            type="button"
+            onClick={() => {
+              console.log("[404] Go Back clicked");
+              router.back();
+            }}
+            className="text-white border-2 border-white hover:bg-white hover:text-black transition-all duration-300 ease-in-out px-6 py-2 h-auto text-base font-medium flex items-center gap-2 hover:scale-105"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -54,7 +63,14 @@ function MessageDisplay() {
             </svg>
             Go Back
           </button>
-          <button className="bg-white text-black hover:bg-gray-200 transition-all duration-300 ease-in-out px-6 py-2 h-auto text-base font-medium flex items-center gap-2 hover:scale-105">
+          <button
+            type="button"
+            onClick={() => {
+              console.log("[404] Go Home clicked");
+              router.push("/");
+            }}
+            className="bg-white text-black hover:bg-gray-200 transition-all duration-300 ease-in-out px-6 py-2 h-auto text-base font-medium flex items-center gap-2 hover:scale-105"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
